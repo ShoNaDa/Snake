@@ -47,9 +47,10 @@ namespace Snake
             //отрисовываю карту
             map1 = new Map(matrixOrder, mapGrid);
 
-
+            //АСИНХРОННОСТЬ
             await Task.Run(() =>
             {
+                //тут для теста просто пока что вправо 5 раз ее двигаю
                 for (int i = 0; i < 5; i++)
                 {
                     DrawSnake(map1);
@@ -57,17 +58,6 @@ namespace Snake
                     snake1.MoveSnake(Sides.RIGHT, map1, this);
                 }
             });
-           ////отрисовываем змейку впервые
-           //DrawSnake(map1);
-
-           // ////движение змейки
-           // snake1.MoveSnake(Sides.RIGHT, map1, this);
-           // ////await Task.Run(() => snake1.MoveSnake(Sides.RIGHT, map1));
-           // //await Task.Run(DrawSnake(map1);
-           // //snake1.MoveSnake(Sides.TOP, map1);
-           // //DrawSnake(map1);
-           // ////await Task.Run(() => snake1.MoveSnake(Sides.LEFT, map1));
-           // ////await Task.Run(() => snake1.MoveSnake(Sides.BOTTOM, map1));
         }
 
         //метод для отрисовки змейки

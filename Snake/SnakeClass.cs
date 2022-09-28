@@ -45,17 +45,16 @@ namespace Snake
                     //проверка - есть ли стена там, куда мы идем | КОММЕНТАРИИ ТОЛЬКО НА ОДНОМ НАПИШУ
                     if (map.AllGrid[_x, _y + 1] != null)
                     {
-                        
-
+                        //вот эта нереальная штука какое-то волшебство делает
                         window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
-                            _name = map.AllGrid[_x, _y + 1].Name.Substring(1);
+                            _nameSectionOfAllGrid = map.AllGrid[_x, _y + 1].Name.Substring(1);
                         });
 
                         //проверка - нет ли там куда мы идем частей нашей змейки (мы ж закрашиваем все, можно этим пользоваться)
                         foreach (var item in LocationSnake)
                         {
-                            if (_name == item)
+                            if (_nameSectionOfAllGrid == item)
                             {
                                 //останавливаем, если да
                                 break;
@@ -77,15 +76,25 @@ namespace Snake
 
                     if (map.AllGrid[_x, _y - 1] != null)
                     {
-                        if (map.AllGrid[_x, _y - 1].Background != Brushes.Yellow)
+                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
-                            for (int i = 0; i < LocationSnake.Count - 1; i++)
-                            {
-                                LocationSnake[i] = LocationSnake[i + 1];
-                            }
+                            _nameSectionOfAllGrid = map.AllGrid[_x, _y - 1].Name.Substring(1);
+                        });
 
-                            LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y - 1}";
+                        foreach (var item in LocationSnake)
+                        {
+                            if (_nameSectionOfAllGrid == item)
+                            {
+                                break;
+                            }
                         }
+
+                        for (int i = 0; i < LocationSnake.Count - 1; i++)
+                        {
+                            LocationSnake[i] = LocationSnake[i + 1];
+                        }
+
+                        LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y - 1}";
                     }
                     break;
 
@@ -93,15 +102,25 @@ namespace Snake
 
                     if (map.AllGrid[_x - 1, _y] != null)
                     {
-                        if (map.AllGrid[_x - 1, _y].Background != Brushes.Yellow)
+                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
-                            for (int i = 0; i < LocationSnake.Count - 1; i++)
-                            {
-                                LocationSnake[i] = LocationSnake[i + 1];
-                            }
+                            _nameSectionOfAllGrid = map.AllGrid[_x - 1, _y].Name.Substring(1);
+                        });
 
-                            LocationSnake[LocationSnake.Count - 1] = $"{_x - 1}_{_y}";
+                        foreach (var item in LocationSnake)
+                        {
+                            if (_nameSectionOfAllGrid == item)
+                            {
+                                break;
+                            }
                         }
+
+                        for (int i = 0; i < LocationSnake.Count - 1; i++)
+                        {
+                            LocationSnake[i] = LocationSnake[i + 1];
+                        }
+
+                        LocationSnake[LocationSnake.Count - 1] = $"{_x - 1}_{_y}";
                     }
                     break;
 
@@ -109,15 +128,25 @@ namespace Snake
 
                     if (map.AllGrid[_x + 1, _y] != null)
                     {
-                        if (map.AllGrid[_x + 1, _y].Background != Brushes.Yellow)
+                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
-                            for (int i = 0; i < LocationSnake.Count - 1; i++)
-                            {
-                                LocationSnake[i] = LocationSnake[i + 1];
-                            }
+                            _nameSectionOfAllGrid = map.AllGrid[_x + 1, _y].Name.Substring(1);
+                        });
 
-                            LocationSnake[LocationSnake.Count - 1] = $"{_x + 1}_{_y}";
+                        foreach (var item in LocationSnake)
+                        {
+                            if (_nameSectionOfAllGrid == item)
+                            {
+                                break;
+                            }
                         }
+
+                        for (int i = 0; i < LocationSnake.Count - 1; i++)
+                        {
+                            LocationSnake[i] = LocationSnake[i + 1];
+                        }
+
+                        LocationSnake[LocationSnake.Count - 1] = $"{_x + 1}_{_y}";
                     }
                     break;
             }
