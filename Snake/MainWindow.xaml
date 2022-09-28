@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Snake"
         mc:Ignorable="d"
         Title="Snake" Height="600" Width="800"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
 
     <Grid Margin="10" x:Name="mapGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
         

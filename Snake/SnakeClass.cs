@@ -30,7 +30,7 @@ namespace Snake
         public List<string> LocationSnake { get; private set; }
 
         //метод движения змейки
-        public void MoveSnake(MainWindow.Sides side, Map map, Window window)
+        public void MoveSnake(MainWindow.Sides side, Map map, MainWindow window)
         {
             //индексы головы
             int _x = Convert.ToInt32(LocationSnake[LocationSnake.Count - 1].Split('_')[0]);
@@ -43,15 +43,15 @@ namespace Snake
                 case MainWindow.Sides.RIGHT:
 
                     //проверка - есть ли стена там, куда мы идем | КОММЕНТАРИИ ТОЛЬКО НА ОДНОМ НАПИШУ
-                    if (map.AllGrid[_x, _y + 1] != null)
+                    if (_y < map.MatrixOrder - 1)
                     {
                         //вот эта нереальная штука какое-то волшебство делает
-                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+                        window.Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
                             _nameSectionOfAllGrid = map.AllGrid[_x, _y + 1].Name.Substring(1);
                         });
 
-                        //проверка - нет ли там куда мы идем частей нашей змейки (мы ж закрашиваем все, можно этим пользоваться)
+                        //проверка - нет ли там куда мы идем частей нашей змейки
                         foreach (var item in LocationSnake)
                         {
                             if (_nameSectionOfAllGrid == item)
@@ -74,7 +74,7 @@ namespace Snake
 
                 case MainWindow.Sides.LEFT:
 
-                    if (map.AllGrid[_x, _y - 1] != null)
+                    if (_y > 0)
                     {
                         window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
@@ -100,7 +100,7 @@ namespace Snake
 
                 case MainWindow.Sides.TOP:
 
-                    if (map.AllGrid[_x - 1, _y] != null)
+                    if (_x > 0)
                     {
                         window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
@@ -126,7 +126,7 @@ namespace Snake
 
                 case MainWindow.Sides.BOTTOM:
 
-                    if (map.AllGrid[_x + 1, _y] != null)
+                    if (_x < map.MatrixOrder - 1)
                     {
                         window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
