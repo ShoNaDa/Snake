@@ -56,7 +56,8 @@ namespace Snake
                         {
                             if (_nameSectionOfAllGrid == item)
                             {
-                                //останавливаем, если да
+                                GameFunctions.IsLoss = true;
+
                                 break;
                             }
                         }
@@ -70,6 +71,9 @@ namespace Snake
                         //перемещаем голову
                         LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y + 1}";
                     }
+
+                    else
+                        GameFunctions.IsLoss = true;
                     break;
 
                 case MainWindow.Sides.LEFT:
@@ -85,6 +89,8 @@ namespace Snake
                         {
                             if (_nameSectionOfAllGrid == item)
                             {
+                                GameFunctions.IsLoss = true;
+
                                 break;
                             }
                         }
@@ -96,6 +102,9 @@ namespace Snake
 
                         LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y - 1}";
                     }
+
+                    else
+                        GameFunctions.IsLoss = true;
                     break;
 
                 case MainWindow.Sides.TOP:
@@ -111,6 +120,8 @@ namespace Snake
                         {
                             if (_nameSectionOfAllGrid == item)
                             {
+                                GameFunctions.IsLoss = true;
+
                                 break;
                             }
                         }
@@ -122,6 +133,9 @@ namespace Snake
 
                         LocationSnake[LocationSnake.Count - 1] = $"{_x - 1}_{_y}";
                     }
+
+                    else
+                        GameFunctions.IsLoss = true;
                     break;
 
                 case MainWindow.Sides.BOTTOM:
@@ -137,6 +151,8 @@ namespace Snake
                         {
                             if (_nameSectionOfAllGrid == item)
                             {
+                                GameFunctions.IsLoss = true;
+
                                 break;
                             }
                         }
@@ -148,8 +164,17 @@ namespace Snake
 
                         LocationSnake[LocationSnake.Count - 1] = $"{_x + 1}_{_y}";
                     }
+
+                    else
+                        GameFunctions.IsLoss = true;
                     break;
             }
+        }
+
+        //метод роста змейки
+        public void SnakeIsGrowing(string section)
+        {
+            LocationSnake.Insert(0, section);
         }
     }
 }

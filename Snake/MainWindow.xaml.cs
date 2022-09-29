@@ -23,12 +23,18 @@ namespace Snake
     public partial class MainWindow : Window
     {
         //направление
-        public int lastSideIndex = 1;
+        private int lastSideIndex = 1;
+
+        //конец хвоста
+        public string lastSectionSnake;
+
+        //переменная, чтоб знать можно ли увеличить змейку
+        private bool mayAddSection = false;
 
         //от классов
-        public Map map1;
-        public SnakeClass snake1 = new SnakeClass();
-        public Apple apple1 = new Apple();
+        Map map1;
+        private SnakeClass snake1 = new SnakeClass();
+        private Apple apple1 = new Apple();
 
         //стороны
         public enum Sides
@@ -56,15 +62,17 @@ namespace Snake
             await Task.Run(() =>
             {
                 //тут для теста просто пока что вправо 5 раз ее двигаю
-                for (int i = 0; i < 100; i++)
+                while (!new GameFunctions().Lossing())
                 {
                     //отрисовываем змею
-                    DrawSnake(map1);
+                    new GameFunctions().DrawSnake(map1, snake1, apple1, this);
 
                     //змейка ест яблоко?
-                    if (EatAppleOfNo(map1, snake1))
+                    if (new GameFunctions().EatAppleOrNo(map1, snake1, apple1, this))
                     {
                         apple1.AddApple(this, snake1, map1);
+
+                        mayAddSection = true;
                     }
 
                     //это чисто уровень скорости
@@ -72,38 +80,16 @@ namespace Snake
 
                     //ну и двигаем змейку
                     snake1.MoveSnake((Sides)lastSideIndex, map1, this);
-                }
-            });
-        }
 
-        //метод для отрисовки змейки
-        public void DrawSnake(Map _map)
-        {
-            //проходимся по всей сетке
-            for (int i = 0; i < _map.AllGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < _map.AllGrid.GetLength(1); j++)
-                {
-                    //теперь каждую ячейку нужно проверить - есть ли тут часть змейки
-                    foreach (string item in snake1.LocationSnake)
+                    //добавляем часть змейки, если нужно
+                    if (mayAddSection)
                     {
-                        //если в ячейке если часть змейки, то мы перекрашиваем в серый (цвет змейки)
-                        if (i == Convert.ToInt32(item.Split('_')[0]) && j == Convert.ToInt32(item.Split('_')[1]))
-                        {
-                            _map.EditMap(i, j, Brushes.Yellow, this);
-                            break;
-                        }
-                        else if (i == apple1.XIndex && j == apple1.YIndex)
-                        {
-                            break;
-                        }
-                        else //иначе закрашиваем в белый, вдруг там цвет змейки
-                        {
-                            _map.EditMap(i, j, Brushes.White, this);
-                        }
+                        snake1.SnakeIsGrowing(lastSectionSnake);
+
+                        mayAddSection = false;
                     }
                 }
-            }
+            });
         }
 
         //метод управления змейкой
@@ -113,42 +99,30 @@ namespace Snake
             {
                 case Key.D:
 
-                    lastSideIndex = 1;
+                    if (lastSideIndex != 0)
+                        lastSideIndex = 1;
+
                     break;
 
                 case Key.A:
 
-                    lastSideIndex = 0;
+                    if (lastSideIndex != 1)
+                        lastSideIndex = 0;
                     break;
 
                 case Key.S:
 
-                    lastSideIndex = 3;
+                    if (lastSideIndex != 2)
+                        lastSideIndex = 3;
                     break;
 
                 case Key.W:
 
-                    lastSideIndex = 2;
+                    if (lastSideIndex != 3)
+                        lastSideIndex = 2;
                     break;
 
             }
-        }
-
-        //метод для проверки - съели яблоко или нет
-        private bool EatAppleOfNo(Map _map, SnakeClass _snakeClass)
-        {
-            //индексы головы
-            int _xHead = Convert.ToInt32(_snakeClass.LocationSnake[_snakeClass.LocationSnake.Count - 1].Split('_')[0]);
-            int _yHead = Convert.ToInt32(_snakeClass.LocationSnake[_snakeClass.LocationSnake.Count - 1].Split('_')[1]);
-
-            if (_xHead == apple1.XIndex && _yHead == apple1.YIndex)
-            {
-                _map.EditMap(_xHead, _yHead, Brushes.Yellow, this);
-
-                return true;
-            };
-
-            return false;
         }
     }
 }
