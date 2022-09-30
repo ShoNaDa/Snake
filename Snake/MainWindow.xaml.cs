@@ -22,22 +22,19 @@ namespace Snake
     /// </summary>
     public partial class MainWindow : Window
     {
+        //от классов
+        public readonly Map map1;
+        private readonly SnakeClass snake1;
+        private readonly Apple apple1 = new Apple();
+
         //направление
         private int lastSideIndex = 1;
-
-        //очки
-        public int Score = 0;
 
         //конец хвоста
         public string lastSectionSnake;
 
         //переменная, чтоб знать можно ли увеличить змейку
         private bool mayAddSection = false;
-
-        //от классов
-        readonly Map map1;
-        private readonly SnakeClass snake1;
-        private readonly Apple apple1 = new Apple();
 
         //стороны
         public enum Sides
@@ -79,10 +76,15 @@ namespace Snake
                         apple1.AddApple(this, snake1, map1);
 
                         mayAddSection = true;
+
+                        Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+                        {
+                            scoreLabel.Content = new GameFunctions().SetScore(snake1, scoreLabel, this);
+                        });
                     }
 
                     //это чисто уровень скорости
-                    Thread.Sleep(new GameFunctions().GetScore(snake1));
+                    Thread.Sleep(new GameFunctions().GetSpeedSnake(snake1));
 
                     //ну и двигаем змейку
                     snake1.MoveSnake((Sides)lastSideIndex, map1, this);
@@ -96,6 +98,9 @@ namespace Snake
                     }
                 }
             });
+
+            new RecordsWindow(map1, scoreLabel.Content.ToString()).Show();
+            Close();
         }
 
         //метод управления змейкой

@@ -19,7 +19,7 @@
 
                 <Label Content="Счет:" FontSize="30" FontWeight="DemiBold"/>
 
-                <TextBlock x:Name="scoreTextBlock" FontSize="30" FontWeight="DemiBold"/>
+                <Label x:Name="scoreLabel" FontSize="30" FontWeight="DemiBold" Content="0"/>
 
             </StackPanel>
 

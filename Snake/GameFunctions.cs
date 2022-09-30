@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Snake
 {
     public class GameFunctions
     {
-        //счетчик очков
-        public string Score;
-
         //свойство, отвечающее за проигрыш
         static public bool IsLoss { get; set; } = false;
 
@@ -72,10 +75,39 @@ namespace Snake
             return IsLoss;
         }
 
-        //метод подсчета очков
-        public int GetScore(SnakeClass snakeClass)
+        //метод получающий скорость змейки
+        public int GetSpeedSnake(SnakeClass snakeClass)
         {
             return 1000 - ((snakeClass.SpeedSnake - 1) * 100);
+        }
+
+        //метод для счета
+        public string SetScore(SnakeClass snakeClass, Label label, Window window)
+        {
+            string result = null;
+
+            window.Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+            {
+                result = (Convert.ToInt32(label.Content) + snakeClass.SpeedSnake).ToString();
+            });
+
+            return result;
+        }
+
+        public void WriteJSON(Player player)
+        {
+
+
+            
+
+            
+
+            if (!File.Exists($"Records{player.PlayingMap}x{player.PlayingMap}.json"))
+            {
+                File.Create($"Records{player.PlayingMap}x{player.PlayingMap}.json").Close();
+            }
+
+            //File.WriteAllText.($"Records{player.PlayingMap}x{player.PlayingMap}.json", , Encoding.GetEncoding(1251));
         }
     }
 }
