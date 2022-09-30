@@ -13,7 +13,7 @@ namespace Snake
 {
     public partial class SnakeClass
     {
-        public SnakeClass(List<string> _locationSnake = null)
+        public SnakeClass(int _speedSnake, List<string> _locationSnake = null)
         {
             //если параметры не передали (т.е. змейка только запустилась), то мы создали ее в конкретном месте
             LocationSnake = _locationSnake ?? new List<string>
@@ -24,10 +24,42 @@ namespace Snake
                 "5_2"
                 //голова
             };
+
+            SpeedSnake = _speedSnake;
         }
 
         //где сейчас змейка
         public List<string> LocationSnake { get; private set; }
+
+        //скорость змейки
+        public int SpeedSnake { get; private set; }
+
+        //метод перемещения змейки
+        private void SnakeDislocation(int _x, int _y)
+        {
+            //перемещаем все кроме головы
+            for (int i = 0; i < LocationSnake.Count - 1; i++)
+            {
+                LocationSnake[i] = LocationSnake[i + 1];
+            }
+
+            //перемещаем голову
+            LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y}";
+        }
+
+        //метод проверки - нет ли там куда мы идем частей нашей змейки
+        private void NextMaySectionSnake(string _nameSectionOfAllGrid)
+        {
+            foreach (var item in LocationSnake)
+            {
+                if (_nameSectionOfAllGrid == item)
+                {
+                    GameFunctions.IsLoss = true;
+
+                    break;
+                }
+            }
+        }
 
         //метод движения змейки
         public void MoveSnake(MainWindow.Sides side, Map map, MainWindow window)
@@ -52,24 +84,10 @@ namespace Snake
                         });
 
                         //проверка - нет ли там куда мы идем частей нашей змейки
-                        foreach (var item in LocationSnake)
-                        {
-                            if (_nameSectionOfAllGrid == item)
-                            {
-                                GameFunctions.IsLoss = true;
+                        NextMaySectionSnake(_nameSectionOfAllGrid);
 
-                                break;
-                            }
-                        }
-
-                        //перемещаем все кроме головы
-                        for (int i = 0; i < LocationSnake.Count - 1; i++)
-                        {
-                            LocationSnake[i] = LocationSnake[i + 1];
-                        }
-
-                        //перемещаем голову
-                        LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y + 1}";
+                        //перемещаем змейку
+                        SnakeDislocation(_x, _y + 1);
                     }
 
                     else
@@ -80,27 +98,14 @@ namespace Snake
 
                     if (_y > 0)
                     {
-                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+                        window.Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
                             _nameSectionOfAllGrid = map.AllGrid[_x, _y - 1].Name.Substring(1);
                         });
 
-                        foreach (var item in LocationSnake)
-                        {
-                            if (_nameSectionOfAllGrid == item)
-                            {
-                                GameFunctions.IsLoss = true;
+                        NextMaySectionSnake(_nameSectionOfAllGrid);
 
-                                break;
-                            }
-                        }
-
-                        for (int i = 0; i < LocationSnake.Count - 1; i++)
-                        {
-                            LocationSnake[i] = LocationSnake[i + 1];
-                        }
-
-                        LocationSnake[LocationSnake.Count - 1] = $"{_x}_{_y - 1}";
+                        SnakeDislocation(_x, _y - 1);
                     }
 
                     else
@@ -111,27 +116,14 @@ namespace Snake
 
                     if (_x > 0)
                     {
-                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+                        window.Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
                             _nameSectionOfAllGrid = map.AllGrid[_x - 1, _y].Name.Substring(1);
                         });
 
-                        foreach (var item in LocationSnake)
-                        {
-                            if (_nameSectionOfAllGrid == item)
-                            {
-                                GameFunctions.IsLoss = true;
+                        NextMaySectionSnake(_nameSectionOfAllGrid);
 
-                                break;
-                            }
-                        }
-
-                        for (int i = 0; i < LocationSnake.Count - 1; i++)
-                        {
-                            LocationSnake[i] = LocationSnake[i + 1];
-                        }
-
-                        LocationSnake[LocationSnake.Count - 1] = $"{_x - 1}_{_y}";
+                        SnakeDislocation(_x - 1, _y);
                     }
 
                     else
@@ -142,27 +134,14 @@ namespace Snake
 
                     if (_x < map.MatrixOrder - 1)
                     {
-                        window.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+                        window.Dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
                         {
                             _nameSectionOfAllGrid = map.AllGrid[_x + 1, _y].Name.Substring(1);
                         });
 
-                        foreach (var item in LocationSnake)
-                        {
-                            if (_nameSectionOfAllGrid == item)
-                            {
-                                GameFunctions.IsLoss = true;
+                        NextMaySectionSnake(_nameSectionOfAllGrid);
 
-                                break;
-                            }
-                        }
-
-                        for (int i = 0; i < LocationSnake.Count - 1; i++)
-                        {
-                            LocationSnake[i] = LocationSnake[i + 1];
-                        }
-
-                        LocationSnake[LocationSnake.Count - 1] = $"{_x + 1}_{_y}";
+                        SnakeDislocation(_x + 1, _y);
                     }
 
                     else

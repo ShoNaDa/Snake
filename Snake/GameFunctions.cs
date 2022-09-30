@@ -10,6 +10,10 @@ namespace Snake
 {
     public class GameFunctions
     {
+        //счетчик очков
+        public string Score;
+
+        //свойство, отвечающее за проигрыш
         static public bool IsLoss { get; set; } = false;
 
         //метод для отрисовки змейки
@@ -66,6 +70,12 @@ namespace Snake
         public bool Lossing()
         {
             return IsLoss;
+        }
+
+        //метод подсчета очков
+        public int GetScore(SnakeClass snakeClass)
+        {
+            return 1000 - ((snakeClass.SpeedSnake - 1) * 100);
         }
     }
 }

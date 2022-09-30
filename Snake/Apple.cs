@@ -21,9 +21,9 @@ namespace Snake
             string _nameSectionOfAllGrid = null;
 
             //рандомим индексы куда поставим яблоко (sleep шоб не одинаково было)
-            int _xRand = new Random().Next(0, 10);
+            int _xRand = new Random().Next(0, map.MatrixOrder);
             Thread.Sleep(10);
-            int _yRand = new Random().Next(0, 10);
+            int _yRand = new Random().Next(0, map.MatrixOrder);
 
             while (true)
             {

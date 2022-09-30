@@ -25,6 +25,9 @@ namespace Snake
         //направление
         private int lastSideIndex = 1;
 
+        //очки
+        public int Score = 0;
+
         //конец хвоста
         public string lastSectionSnake;
 
@@ -32,9 +35,9 @@ namespace Snake
         private bool mayAddSection = false;
 
         //от классов
-        Map map1;
-        private SnakeClass snake1 = new SnakeClass();
-        private Apple apple1 = new Apple();
+        readonly Map map1;
+        private readonly SnakeClass snake1;
+        private readonly Apple apple1 = new Apple();
 
         //стороны
         public enum Sides
@@ -45,19 +48,22 @@ namespace Snake
             BOTTOM
         }
 
-        public MainWindow()
+        public MainWindow(int _matrixOrder, int _speedSnake)
         {
             InitializeComponent();
+
+            //отрисовываю карту
+            map1 = new Map(_matrixOrder, mapGrid);
+
+            //создаем змейку
+            snake1 = new SnakeClass(_speedSnake);
+
+            //отрисовываем яблоко
+            apple1.AddApple(this, snake1, map1);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //отрисовываю карту
-            map1 = new Map(10, mapGrid);
-
-            //отрисовываем яблоко
-            apple1.AddApple(this, snake1, map1);
-
             //АСИНХРОННОСТЬ
             await Task.Run(() =>
             {
@@ -76,7 +82,7 @@ namespace Snake
                     }
 
                     //это чисто уровень скорости
-                    Thread.Sleep(500);
+                    Thread.Sleep(new GameFunctions().GetScore(snake1));
 
                     //ну и двигаем змейку
                     snake1.MoveSnake((Sides)lastSideIndex, map1, this);
