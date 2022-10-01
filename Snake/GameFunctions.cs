@@ -93,21 +93,5 @@ namespace Snake
 
             return result;
         }
-
-        public void WriteJSON(Player player)
-        {
-
-
-            
-
-            
-
-            if (!File.Exists($"Records{player.PlayingMap}x{player.PlayingMap}.json"))
-            {
-                File.Create($"Records{player.PlayingMap}x{player.PlayingMap}.json").Close();
-            }
-
-            //File.WriteAllText.($"Records{player.PlayingMap}x{player.PlayingMap}.json", , Encoding.GetEncoding(1251));
-        }
     }
 }

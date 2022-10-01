@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,7 +35,7 @@ namespace Snake
 
             matrixOrder = _map.MatrixOrder;
 
-            PATH = $"{Environment.CurrentDirectory}\\records map{matrixOrder}x{matrixOrder}.json";
+            PATH = $@"C:\recordsMap{matrixOrder}x{matrixOrder}.json";
 
             fileIO = new FileIOService(PATH);
 
